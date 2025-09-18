@@ -1,12 +1,14 @@
 package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.User;
+import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
 import com.sweetshop.sweetshop_management.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -22,21 +24,23 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;        // Class under test
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testRegisterUser_Success() {
+    void testRegisterUser_Success_withHashedPassword() {
         // Arrange
         User user = new User();
         user.setUsername("adarsh");
         user.setPassword("password123");
 
-        // Repo says username doesn't exist
         when(userRepository.findByUsername("adarsh")).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        // Return the user that service passes in (with hashed password!)
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
         // Act
         User savedUser = userService.registerUser(user);
@@ -44,8 +48,13 @@ class UserServiceTest {
         // Assert
         assertNotNull(savedUser);
         assertEquals("adarsh", savedUser.getUsername());
+
+        // ✅ Password should be hashed
+        assertNotEquals("password123", savedUser.getPassword());
+        assertTrue(passwordEncoder.matches("password123", savedUser.getPassword()));
+
         verify(userRepository, times(1)).findByUsername("adarsh");
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
@@ -55,15 +64,25 @@ class UserServiceTest {
         user.setUsername("adarsh");
         user.setPassword("password123");
 
-        // Repo says username already exists
         when(userRepository.findByUsername("adarsh")).thenReturn(Optional.of(user));
 
         // Act + Assert
-        IllegalArgumentException exception =
-                assertThrows(IllegalArgumentException.class, () -> userService.registerUser(user));
+        UsernameAlreadyExistsException exception =
+                assertThrows(UsernameAlreadyExistsException.class, () -> userService.registerUser(user));
 
         assertEquals("Username already exists!", exception.getMessage());
         verify(userRepository, times(1)).findByUsername("adarsh");
-        verify(userRepository, never()).save(any(User.class)); // Should not save duplicate
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void registerUser_ThrowsException_WhenUsernameAlreadyExists() {
+        User existingUser = new User();
+        existingUser.setUsername("testuser");
+
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(existingUser));
+
+        assertThrows(UsernameAlreadyExistsException.class,
+                () -> userService.registerUser(existingUser));
     }
 }
