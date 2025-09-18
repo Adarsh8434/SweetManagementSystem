@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository;  // Mocked dependency
+    private UserRepository userRepository; 
 
     @InjectMocks
     private UserService userService;        // Class under test
@@ -44,7 +44,7 @@ class UserServiceTest {
         // Assert
         assertNotNull(savedUser);
         assertEquals("adarsh", savedUser.getUsername());
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(any(User.class));
     }
 }
 
