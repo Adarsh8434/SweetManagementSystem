@@ -38,6 +38,7 @@ public class SweetController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice
     ) {
+      
         return ResponseEntity.ok(sweetService.searchSweets(name, category, minPrice, maxPrice));
     }
 

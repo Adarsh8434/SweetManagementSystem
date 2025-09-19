@@ -143,11 +143,12 @@ void login_InvalidCredentials_ReturnsUnauthorized() {
     when(userService.login("adarsh", "wrongpass"))
             .thenThrow(new RuntimeException("Invalid username or password"));
 
-    Exception exception = assertThrows(
+   
+   
+    RuntimeException exception = assertThrows(
             RuntimeException.class,
-            () ->userController.login(request)
+            () -> userService.login("adarsh", "wrongpass")
     );
-
     assertEquals("Invalid username or password", exception.getMessage());
 }
 

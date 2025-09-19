@@ -1,6 +1,8 @@
 package com.sweetshop.sweetshop_management.entity;
 
 
+import com.sweetshop.sweetshop_management.modal.Role;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +21,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role; // "USER" or "ADMIN"
+    private Role role = Role.USER; // "USER" or "ADMIN"
+
+    public void setRole(Role role) {
+    this.role = role;
+}
+
+    public Role getRole() {
+        return role;
+    }
 }

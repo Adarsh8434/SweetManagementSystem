@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {
@@ -112,4 +113,22 @@ class UserControllerTest {
             assertEquals(fakeToken, response.getBody().getToken());
         }
     }
+    @Test
+void login_InvalidCredentials_ReturnsUnauthorized() {
+    RegisterRequest request = new RegisterRequest();
+    request.setUsername("adarsh");
+    request.setPassword("wrongpass");
+
+    when(userService.login("adarsh", "wrongpass"))
+            .thenThrow(new RuntimeException("Invalid username or password"));
+
+    RuntimeException exception = assertThrows(
+            RuntimeException.class,
+            () -> userController.login(request)
+    );
+
+    assertEquals("Invalid username or password", exception.getMessage());
 }
+
+}
+
