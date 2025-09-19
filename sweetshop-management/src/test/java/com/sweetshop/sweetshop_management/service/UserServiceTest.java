@@ -1,5 +1,6 @@
 package com.sweetshop.sweetshop_management.service;
 
+import com.sweetshop.sweetshop_management.dto.RegisterRequest;
 import com.sweetshop.sweetshop_management.entity.User;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
 import com.sweetshop.sweetshop_management.modal.Role;
@@ -133,6 +134,22 @@ private User createMockUser(String username, String password) {
     return user;
 }
 
+@Test
+void login_InvalidCredentials_ReturnsUnauthorized() {
+    RegisterRequest request = new RegisterRequest();
+    request.setUsername("adarsh");
+    request.setPassword("wrongpass");
+
+    when(userService.login("adarsh", "wrongpass"))
+            .thenThrow(new RuntimeException("Invalid username or password"));
+
+    Exception exception = assertThrows(
+            RuntimeException.class,
+            () ->userController.login(request)
+    );
+
+    assertEquals("Invalid username or password", exception.getMessage());
+}
 
 
 }
