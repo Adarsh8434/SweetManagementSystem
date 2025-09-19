@@ -1,15 +1,17 @@
-
 package com.sweetshop.sweetshop_management.controller;
 
 import com.sweetshop.sweetshop_management.dto.AuthResponse;
 import com.sweetshop.sweetshop_management.dto.RegisterRequest;
 import com.sweetshop.sweetshop_management.entity.User;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
+import com.sweetshop.sweetshop_management.modal.Role;
+import com.sweetshop.sweetshop_management.security.JwtUtil;
 import com.sweetshop.sweetshop_management.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
@@ -29,39 +31,85 @@ class UserControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    // ------------------ REGISTER ------------------
+
     @Test
     void registerUser_Success() {
-            RegisterRequest request = new RegisterRequest();
-    request.setUsername("adarsh");
-    request.setPassword("password123");
-        User user = new User();
-        user.setUsername("adarsh");
-        user.setPassword("password123");
+        // Arrange
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("adarsh");
+        request.setPassword("password123");
 
-        when(userService.registerUser(user)).thenReturn(user);
+        User savedUser = new User();
+        savedUser.setId(1L);
+        savedUser.setUsername("adarsh");
+        savedUser.setPassword("hashed");
+        savedUser.setRole(Role.USER);
 
+        when(userService.registerUser(any(User.class))).thenReturn(savedUser);
+
+        // Act
         ResponseEntity<AuthResponse> response = userController.registerUser(request);
 
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("adarsh", response.getBody().getUsername());
+        assertEquals("USER", response.getBody().getRole());
+        assertNull(response.getBody().getToken()); // no token at register
     }
 
     @Test
     void registerUser_DuplicateUsername() {
-         RegisterRequest request = new RegisterRequest();
-    request.setUsername("adarsh");
-    request.setPassword("password123");
-        User user = new User();
-        user.setUsername("adarsh");
+        // Arrange
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("adarsh");
+        request.setPassword("password123");
 
-        when(userService.registerUser(user)).thenThrow(new UsernameAlreadyExistsException("Username already exists!"));
+        when(userService.registerUser(any(User.class)))
+                .thenThrow(new UsernameAlreadyExistsException("Username already exists!"));
+
+        // Act + Assert
         UsernameAlreadyExistsException exception = assertThrows(
-            UsernameAlreadyExistsException.class,
-            () -> userController.registerUser(request)
+                UsernameAlreadyExistsException.class,
+                () -> userController.registerUser(request)
         );
 
         assertEquals("Username already exists!", exception.getMessage());
     }
-}
 
+    // ------------------ LOGIN ------------------
+
+    @Test
+    void login_Success_ReturnsAuthResponse() {
+        // Arrange
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("adarsh");
+        request.setPassword("password123");
+
+        User mockUser = new User();
+        mockUser.setId(1L);
+        mockUser.setUsername("adarsh");
+        mockUser.setPassword("hashed");
+        mockUser.setRole(Role.USER);
+
+        when(userService.login("adarsh", "password123")).thenReturn(mockUser);
+
+        String fakeToken = "fake-jwt-token";
+
+        try (MockedStatic<JwtUtil> mockedJwt = mockStatic(JwtUtil.class)) {
+            mockedJwt.when(() -> JwtUtil.generateToken("adarsh", "USER"))
+                     .thenReturn(fakeToken);
+
+            // Act
+            ResponseEntity<AuthResponse> response = userController.login(request);
+
+            // Assert
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCodeValue());
+            assertEquals("adarsh", response.getBody().getUsername());
+            assertEquals("USER", response.getBody().getRole());
+            assertEquals(fakeToken, response.getBody().getToken());
+        }
+    }
+}
