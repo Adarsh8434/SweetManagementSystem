@@ -1,6 +1,7 @@
 package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.User;
+import com.sweetshop.sweetshop_management.exception.InvalidCredientialsException;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
 import com.sweetshop.sweetshop_management.modal.Role;
 import com.sweetshop.sweetshop_management.repository.UserRepository;
