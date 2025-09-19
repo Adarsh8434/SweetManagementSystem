@@ -39,10 +39,10 @@ public class UserService {
     }
     public User login(String username, String password) {
     User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+            .orElseThrow(() -> new InvalidCredientialsException("Invalid username or password"));
 
     if (!passwordEncoder.matches(password, user.getPassword())) {
-        throw new RuntimeException("Invalid username or password");
+        throw new InvalidCredientialsException("Invalid username or password");
     }
 
     return user;
