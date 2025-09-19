@@ -2,6 +2,7 @@ package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.User;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
+import com.sweetshop.sweetshop_management.modal.Role;
 import com.sweetshop.sweetshop_management.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,4 +86,35 @@ class UserServiceTest {
         assertThrows(UsernameAlreadyExistsException.class,
                 () -> userService.registerUser(existingUser));
     }
+    @Test
+void testRegisterUser_DefaultRoleIsUser() {
+    User user = new User();
+    user.setUsername("john");
+    user.setPassword("secret");
+
+    when(userRepository.findByUsername("john")).thenReturn(Optional.empty());
+    when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+    User savedUser = userService.registerUser(user);
+
+    assertNotNull(savedUser);
+    assertEquals(Role.USER, savedUser.getRole()); // ✅ Default role check
+}
+@Test
+void testRegisterUser_AdminRoleNotAllowedDuringRegistration() {
+    User user = new User();
+    user.setUsername("adarsh");
+    user.setPassword("wanttobecomeadmin");
+    user.setRole(Role.ADMIN); 
+
+    when(userRepository.findByUsername("adarsh")).thenReturn(Optional.empty());
+    when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+    User savedUser = userService.registerUser(user);
+
+    // Should override to USER
+    assertEquals(Role.USER, savedUser.getRole());
+}
+
+
 }
