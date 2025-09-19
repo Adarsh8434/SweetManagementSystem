@@ -2,6 +2,7 @@ package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.User;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
+import com.sweetshop.sweetshop_management.modal.Role;
 import com.sweetshop.sweetshop_management.repository.UserRepository;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ public class UserService {
         validateUsername(user.getUsername());
      user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+   user.setRole(Role.USER); // Default role is USER
         return userRepository.save(user);
     }
 
