@@ -113,8 +113,26 @@ void testRegisterUser_AdminRoleNotAllowedDuringRegistration() {
     User savedUser = userService.registerUser(user);
 
     // Should override to USER
+    assertEquals(Role.USER, savedUser.getRole(), "Default role should be USER");
+}
+@Test
+void shouldAssignDefaultUserRoleWhenRoleIsNull() {
+    User user = createMockUser("newuser", "password123");
+
+    when(userRepository.findByUsername("newuser")).thenReturn(Optional.empty());
+    when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+    User savedUser = userService.registerUser(user);
+
     assertEquals(Role.USER, savedUser.getRole());
 }
+private User createMockUser(String username, String password) {
+    User user = new User();
+    user.setUsername(username);
+    user.setPassword(password);
+    return user;
+}
+
 
 
 }
