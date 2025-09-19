@@ -1,7 +1,7 @@
 package com.sweetshop.sweetshop_management.service;
 
-
 import com.sweetshop.sweetshop_management.entity.Sweet;
+import com.sweetshop.sweetshop_management.exception.SweetNotFoundException;
 import com.sweetshop.sweetshop_management.repository.sweetRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +29,25 @@ public class SweetService {
         return sweetRepo.findById(id);
     }
 
-    public List<Sweet> searchSweets(String name, String category) {
-        if (name != null) return sweetRepo.findByNameContainingIgnoreCase(name);
-        if (category != null) return sweetRepo.findByCategory(category);
+    // --- MODIFIED METHOD ---
+    public List<Sweet> searchSweets(String name, String category, Double minPrice, Double maxPrice) {
+        // Prioritize the most specific search: price range
+        if (minPrice != null && maxPrice != null) {
+            return sweetRepo.findByPriceBetween(minPrice, maxPrice);
+        }
+        if (name != null && !name.isEmpty()) {
+            return sweetRepo.findByNameContainingIgnoreCase(name);
+        }
+        if (category != null && !category.isEmpty()) {
+            return sweetRepo.findByCategory(category);
+        }
+        
+        // If no criteria are provided, return all sweets
         return sweetRepo.findAll();
     }
 
     public Sweet updateSweet(Long id, Sweet sweet) {
-        Sweet existing = sweetRepo.findById(id).orElseThrow();
+        Sweet existing = sweetRepo.findById(id).orElseThrow(() ->new SweetNotFoundException( id));
         existing.setName(sweet.getName());
         existing.setCategory(sweet.getCategory());
         existing.setPrice(sweet.getPrice());
