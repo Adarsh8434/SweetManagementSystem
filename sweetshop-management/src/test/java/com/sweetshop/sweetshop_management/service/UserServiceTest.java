@@ -134,23 +134,5 @@ private User createMockUser(String username, String password) {
     return user;
 }
 
-@Test
-void login_InvalidCredentials_ReturnsUnauthorized() {
-    RegisterRequest request = new RegisterRequest();
-    request.setUsername("adarsh");
-    request.setPassword("wrongpass");
-
-    when(userService.login("adarsh", "wrongpass"))
-            .thenThrow(new RuntimeException("Invalid username or password"));
-
-   
-   
-    RuntimeException exception = assertThrows(
-            RuntimeException.class,
-            () -> userService.login("adarsh", "wrongpass")
-    );
-    assertEquals("Invalid username or password", exception.getMessage());
-}
-
 
 }

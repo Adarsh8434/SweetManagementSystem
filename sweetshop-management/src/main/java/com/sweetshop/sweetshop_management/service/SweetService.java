@@ -2,6 +2,7 @@ package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.Sweet;
 import com.sweetshop.sweetshop_management.exception.SweetNotFoundException;
+import com.sweetshop.sweetshop_management.exception.SweetStockEnded;
 import com.sweetshop.sweetshop_management.repository.sweetRepository;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class SweetService {
             return sweetRepo.findByNameContainingIgnoreCase(name);
         }
         if (category != null && !category.isEmpty()) {
-            return sweetRepo.findByCategory(category);
+            return sweetRepo.findByCategoryIgnoreCase(category);
         }
         
         // If no criteria are provided, return all sweets
@@ -58,4 +59,22 @@ public class SweetService {
     public void deleteSweet(Long id) {
         sweetRepo.deleteById(id);
     }
+    public Sweet purchaseSweet(Long id, int quantity) {
+    Sweet sweet = sweetRepo.findById(id)
+            .orElseThrow(() -> new SweetNotFoundException( id));
+
+    if (sweet.getQuantity() < quantity) {
+        throw new SweetStockEnded(id);
+    }
+
+    sweet.setQuantity(sweet.getQuantity() - quantity);
+    return sweetRepo.save(sweet);
+}
+public Sweet restockSweet(Long id, int quantity) {
+    Sweet sweet = sweetRepo.findById(id)
+            .orElseThrow(() -> new SweetNotFoundException(id));
+
+    sweet.setQuantity(sweet.getQuantity() + quantity);
+    return sweetRepo.save(sweet);
+}
 }

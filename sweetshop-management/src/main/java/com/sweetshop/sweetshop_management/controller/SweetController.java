@@ -6,12 +6,14 @@ import com.sweetshop.sweetshop_management.service.SweetService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/sweets")
+@CrossOrigin(origins = "http://localhost:5173")
 public class SweetController {
 
     private final SweetService sweetService;
@@ -57,5 +59,17 @@ public class SweetController {
     public String handleSweetNotFound(SweetNotFoundException ex) {
         return ex.getMessage();
     }
+    @PostMapping("/{id}/purchase")
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+public ResponseEntity<Sweet> purchaseSweet(@PathVariable Long id, @RequestParam int quantity) {
+    return ResponseEntity.ok(sweetService.purchaseSweet(id, quantity));
+}
+
+@PostMapping("/{id}/restock")
+@PreAuthorize("hasAnyRole('ADMIN')")
+public ResponseEntity<Sweet> restockSweet(@PathVariable Long id, @RequestParam int quantity) {
+    return ResponseEntity.ok(sweetService.restockSweet(id, quantity));
+}
+
 }
 

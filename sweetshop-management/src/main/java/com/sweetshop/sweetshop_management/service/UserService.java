@@ -2,6 +2,7 @@ package com.sweetshop.sweetshop_management.service;
 
 import com.sweetshop.sweetshop_management.entity.User;
 import com.sweetshop.sweetshop_management.exception.InvalidCredientialsException;
+import com.sweetshop.sweetshop_management.exception.UserNotFoundException;
 import com.sweetshop.sweetshop_management.exception.UsernameAlreadyExistsException;
 import com.sweetshop.sweetshop_management.modal.Role;
 import com.sweetshop.sweetshop_management.repository.UserRepository;
@@ -47,7 +48,7 @@ public class UserService {
 }
 public User promoteToAdmin(String username) {
     User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new RuntimeException("User not found with username: "));
+            .orElseThrow(() -> new UserNotFoundException("User not found with username: "));
 
     user.setRole(Role.ADMIN);
     return userRepository.save(user);
