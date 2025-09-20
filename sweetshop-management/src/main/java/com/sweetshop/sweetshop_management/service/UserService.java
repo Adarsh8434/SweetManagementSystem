@@ -33,9 +33,7 @@ public class UserService {
         
     }
     private void assignDefaultRole(User user) {
-        if (user.getRole() == null) { // only assign when not explicitly set
-            user.setRole(Role.USER);
-        }
+       user.setRole(Role.USER);
     }
     public User login(String username, String password) {
     User user = userRepository.findByUsername(username)
@@ -46,6 +44,13 @@ public class UserService {
     }
 
     return user;
+}
+public User promoteToAdmin(String username) {
+    User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("User not found with username: "));
+
+    user.setRole(Role.ADMIN);
+    return userRepository.save(user);
 }
 
 }
