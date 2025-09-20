@@ -1,0 +1,13 @@
+body {
+  background: linear-gradient(to right, #ffecd2, #fcb69f);
+  font-family: "Poppins", sans-serif;
+}
+
+.custom-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 25px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
