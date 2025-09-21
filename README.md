@@ -29,6 +29,12 @@ Purchase Sweet (User) → POST /api/sweets/{id}/purchase (decreases quantity).
 
 Restock Sweet (Admin) → POST /api/sweets/{id}/restock (increases quantity).
 
+Output:
+Admin: <img width="1905" height="671" alt="image" src="https://github.com/user-attachments/assets/7871406e-ea53-4332-80ee-632cb6112650" />
+Admin add sweet: <img width="1875" height="925" alt="image" src="https://github.com/user-attachments/assets/971a7be6-dc0f-4416-a6e6-4603b09eee60" />
+
+User: <img width="1898" height="721" alt="image" src="https://github.com/user-attachments/assets/70ea347c-8a43-406e-9adc-9316e7c55fee" />
+
 🛠 Tech Stack
 Backend
 
@@ -282,6 +288,8 @@ Suggested Postman test cases & Git commands.
 
 Helped build frontend setup with React + Bootstrap.
 
+Take help in creating frontend login and registration page
+
 GitHub Copilot:
 
 Suggested boilerplate code for entities, repositories, service methods.
@@ -302,59 +310,7 @@ Saved significant time, especially in debugging and testing.
 
 Add Order History for users.
 
-Implement Payment Gateway Integration.
-
-Deploy project to Docker + Cloud (AWS/Render).
-
-mvn test
-
-🤖 My AI Usage
-
-In this project, I used AI tools to support development, problem-solving, and documentation.
-
-✅ Tools Used
-
-ChatGPT (OpenAI GPT-5)
-
-GitHub Copilot
-
-✅ How I Used Them
-
-ChatGPT:
-
-Helped design the backend API structure.
-
-Helped in designing test unit for red 
-
-Helped build frontend setup with React + Bootstrap.
-
-GitHub Copilot:
-
-Suggested boilerplate code for entities, repositories, service methods.
-
-Help me to importing
-
-✅ Reflection on AI in Workflow
-
-AI accelerated development by generating repetitive code.
-
-Acted like a tutor, explaining concepts and errors.
-
-I reviewed and customized all AI outputs — ensuring learning + correctness.
-
-Saved significant time, especially in debugging and testing.
-
-In short period of time we can do more work.
-
-It suggestion helps me to write and complete the code fast
-
-Itsh help me to focus on logic no syntax error,code error etc
-
-📌 Future Enhancements
-
-Add Order History for users.
-
-IMprove UI of the Project 
+Improve UI and want to make full pledged sweet management system.
 
 Implement Payment Gateway Integration.
 
