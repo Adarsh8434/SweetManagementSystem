@@ -23,6 +23,7 @@ public class SweetController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<Sweet> addSweet(@RequestBody Sweet sweet) {
         Sweet savedSweet = sweetService.addSweet(sweet);
         return ResponseEntity.ok(savedSweet);
@@ -45,11 +46,13 @@ public class SweetController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Sweet> updateSweet(@PathVariable Long id, @RequestBody Sweet sweet) {
         return ResponseEntity.ok(sweetService.updateSweet(id, sweet));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<Void> deleteSweet(@PathVariable Long id) {
         sweetService.deleteSweet(id);
         return ResponseEntity.noContent().build();
