@@ -203,6 +203,8 @@ spring.datasource.password=your_password
 # Run backend
 mvn spring-boot:run
 
+Runs on 👉 http://localhost:8080
+
 2️⃣ Frontend (React + Bootstrap)
 # Go to frontend folder
 cd sweetshop-frontend
@@ -222,7 +224,7 @@ Now open 👉 http://localhost:5173
 Register User → POST /api/auth/register
 
 {
-  "username": "john",
+  "username": "Adarsh",
   "password": "password123"
 }
 
@@ -230,7 +232,7 @@ Register User → POST /api/auth/register
 Login User → POST /api/auth/login
 
 {
-  "username": "john",
+  "username": "Adarsh",
   "password": "password123"
 }
 
@@ -250,13 +252,11 @@ Use Bearer token in Authorization header.
 
 👑 Admin Setup
 
-To create an admin user, insert manually in PostgreSQL:
+One default admin: 
 
-INSERT INTO users (username, password, role)
-VALUES ('admin', '$2a$10$EXAMPLE_HASHED_PASSWORD', 'ROLE_ADMIN');
+    Username: admin
+    password: admin123
 
-
-👉 The password can be admin123 (bcrypt-hashed).
 
 🧪 Testing
 
