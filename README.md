@@ -124,6 +124,8 @@ Password=admin123;
 
 Run all backend tests:
 
+Postman Link: https://www.postman.com/adarsh8987/sweetshop/collection/t5zz5rn/sweet-shop-api?action=share&creator=34759469
+
 🍬 Sweet Shop Management System
 
 A full-stack web application for managing a sweet shop with features for authentication, sweets inventory management, and role-based access (User/Admin).
@@ -210,7 +212,6 @@ Now open 👉 http://localhost:5173
 
 📮 API Testing with Postman
 
-Postman Link: https://www.postman.com/adarsh8987/sweetshop/collection/t5zz5rn/sweet-shop-api?action=share&creator=34759469
 
 Register User → POST /api/auth/register
 
