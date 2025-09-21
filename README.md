@@ -354,7 +354,7 @@ Itsh help me to focus on logic no syntax error,code error etc
 
 Add Order History for users.
 
-Remove UI of the Project 
+IMprove UI of the Project 
 
 Implement Payment Gateway Integration.
 
