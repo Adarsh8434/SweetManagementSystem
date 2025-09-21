@@ -16,8 +16,8 @@ function AddEditSweetModal({ show, handleClose, sweet, onSave }) {
       setFormData({
         name: sweet.name || "",
         category: sweet.category || "",
-        price: sweet.price || "",
-        quantity: sweet.quantity || "",
+        price: sweet.price?.toString() || "",
+        quantity: sweet.quantity?.toString() || "",
       });
     } else {
       setFormData({
@@ -44,7 +44,14 @@ function AddEditSweetModal({ show, handleClose, sweet, onSave }) {
       alert("⚠️ All fields are required!");
       return;
     }
-    onSave({ ...formData, price: parseFloat(formData.price), quantity: parseInt(formData.quantity, 10) });
+
+    // Pass sanitized data to parent
+    onSave({
+      ...formData,
+      price: parseFloat(formData.price),
+      quantity: parseInt(formData.quantity, 10),
+    });
+
     handleClose();
   };
 
