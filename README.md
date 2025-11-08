@@ -1,317 +1,161 @@
 🍬 Sweet Shop Management System
 
-A full-stack web application for managing a sweet shop with features for authentication, sweets inventory management, and role-based access (User/Admin).
+🔗 GitHub: https://github.com/Adarsh8434/SweetManagementSystem
+
+🔗 Postman API Collection: https://www.postman.com/adarsh8987/sweetshop/collection/t5zz5rn/sweet-shop-api
+
+🔗 ✅ Live Frontend: http://54.253.94.114
+
+🔗 ✅ Live Backend (EC2 + Docker): http://54.253.94.114:8080
+
+A full-stack web application to manage sweets inventory with secure authentication, JWT login, and admin-controlled access.
 
 🚀 Features
-🔑 Authentication
+🔐 Authentication
 
-User registration and login with JWT-based authentication.
+JWT-based Login & Registration
 
-Default role: USER (admin cannot be self-registered).
+Default role → USER
 
-Admin role can only be assigned one time only.
+ADMIN cannot self-register
 
-🍭 Sweets Management (Protected Endpoints)
+Admin created automatically only once
 
-Add Sweet (Admin) → POST /api/sweets
+🍭 Sweets Management (Protected APIs)
+Feature	Role	Endpoint
+Add Sweet	ADMIN	POST /api/sweets
+View All Sweets	ALL	GET /api/sweets
+Search Sweets	ALL	GET /api/sweets/search
+Update Sweet	ADMIN	PUT /api/sweets/{id}
+Delete Sweet	ADMIN	DELETE /api/sweets/{id}
+📦 Inventory Management
+Action	Role	Endpoint
+Purchase Sweet (–qty)	USER/ADMIN	POST /api/sweets/{id}/purchase
+Restock Sweet (+qty)	ADMIN	POST /api/sweets/{id}/restock
+🧑‍💻 Tech Stack
+✅ Backend
 
-View All Sweets → GET /api/sweets
+Java Spring Boot
 
-Search Sweets by name, category, or price range → GET /api/sweets/search
+Spring Security + JWT
 
-Update Sweet → PUT /api/sweets/{id}
+PostgreSQL
 
-Delete Sweet (Admin) → DELETE /api/sweets/{id}
+Hibernate & JPA
 
-📦 Inventory Management (Protected Endpoints)
+JUnit + Mockito
 
-Purchase Sweet (User) → POST /api/sweets/{id}/purchase (decreases quantity).
+Dockerized + deployed on AWS EC2
 
-Restock Sweet (Admin) → POST /api/sweets/{id}/restock (increases quantity).
-
-Output:
-Admin: <img width="1905" height="671" alt="image" src="https://github.com/user-attachments/assets/7871406e-ea53-4332-80ee-632cb6112650" />
-Admin add sweet: <img width="1875" height="925" alt="image" src="https://github.com/user-attachments/assets/971a7be6-dc0f-4416-a6e6-4603b09eee60" />
-
-User: <img width="1898" height="721" alt="image" src="https://github.com/user-attachments/assets/70ea347c-8a43-406e-9adc-9316e7c55fee" />
-
-🛠 Tech Stack
-Backend
-
-Java Spring Boot (REST API)
-
-PostgreSQL (Database)
-
-Spring Security + JWT (Authentication & Authorization)
-
-JUnit + Mockito (Testing)
-
-Frontend
+✅ Frontend
 
 React (Vite)
 
-Bootstrap 5 (UI Styling)
+Bootstrap 5
 
-Tools
+Deployed via Nginx on AWS EC2
 
-Maven (backend build tool)
+✅ Tools
 
-npm + Vite (frontend build tool)
+Docker
 
-Postman (API testing)
+Maven
 
-GitHub (version control & collaboration)
+Git & GitHub
+
+Postman
+
+AWS EC2, Nginx
 
 ⚙️ Setup Instructions
-1️⃣ Backend (Spring Boot)
-# Go to backend folder
+✅ 1️⃣ Backend (Spring Boot)
+
+Navigate:
+
 cd sweetshop-management
 
-# Update PostgreSQL credentials in application.properties
+
+Update DB:
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/sweetshop
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 
-# Run backend
+
+Run:
+
 mvn spring-boot:run
 
-2️⃣ Frontend (React + Bootstrap)
-# Go to frontend folder
+
+Runs at → http://localhost:8080
+
+✅ 2️⃣ Frontend (React + Bootstrap)
 cd sweetshop-frontend
-
-# Install dependencies
 npm install
-
-# Run frontend
 npm run dev
 
 
-Now open 👉 http://localhost:5173
+Runs at → http://localhost:5173
 
-📮 API Testing with Postman
+📮 Postman API Testing
+Register
+POST /api/auth/register
+{
+  "username": "Adarsh",
+  "password": "password123"
+}
 
-Register User → POST /api/auth/register
-
+Login
+POST /api/auth/login
 {
   "username": "Adarsh",
   "password": "password123"
 }
 
 
-Login User → POST /api/auth/login
+Receive → JWT Token
 
-{
-  "username": "Adarsh",
-  "password": "password123"
-}
-
-
-✅ Returns JWT token for authorization.
-
-Add Sweet (Admin only)
-
-Use Bearer token in Authorization header.
-
-{
-  "name": "Ladoo",
-  "category": "Indian",
-  "price": 50.0,
-  "quantity": 20
-}
-
-👑 Admin Setup
-
-Username: admin;
-Password=admin123;
-
-
+👑 Default Admin
+username: admin  
+password: admin123
 
 🧪 Testing
-
-Run all backend tests:
-
-Postman Link: https://www.postman.com/adarsh8987/sweetshop/collection/t5zz5rn/sweet-shop-api?action=share&creator=34759469
-
-🍬 Sweet Shop Management System
-
-A full-stack web application for managing a sweet shop with features for authentication, sweets inventory management, and role-based access (User/Admin).
-
-🚀 Features
-🔑 Authentication
-
-User registration and login with JWT-based authentication.
-
-Default role: USER (admin cannot be self-registered).
-
-Admin role can only be assigned manually via the database.
-
-🍭 Sweets Management (Protected Endpoints)
-
-Add Sweet (Admin) → POST /api/sweets
-
-View All Sweets → GET /api/sweets
-
-Search Sweets by name, category, or price range → GET /api/sweets/search
-
-Update Sweet → PUT /api/sweets/{id}
-
-Delete Sweet (Admin) → DELETE /api/sweets/{id}
-
-📦 Inventory Management (Protected Endpoints)
-
-Purchase Sweet (User) → POST /api/sweets/{id}/purchase (decreases quantity).
-
-Restock Sweet (Admin) → POST /api/sweets/{id}/restock (increases quantity).
-
-🛠 Tech Stack
-Backend
-
-Java Spring Boot (REST API)
-
-PostgreSQL (Database)
-
-Spring Security + JWT (Authentication & Authorization)
-
-JUnit + Mockito (Testing)
-
-Frontend
-
-React (Vite)
-
-Bootstrap 5 (UI Styling)
-
-Tools
-
-Maven (backend build tool)
-
-npm + Vite (frontend build tool)
-
-Postman (API testing)
-
-GitHub (version control & collaboration)
-
-⚙️ Setup Instructions
-1️⃣ Backend (Spring Boot)
-# Go to backend folder
-cd sweetshop-management
-
-# Update PostgreSQL credentials in application.properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/sweetshop
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-
-# Run backend
-mvn spring-boot:run
-
-Runs on 👉 http://localhost:8080
-
-2️⃣ Frontend (React + Bootstrap)
-# Go to frontend folder
-cd sweetshop-frontend
-
-# Install dependencies
-npm install
-
-# Run frontend
-npm run dev
-
-
-Now open 👉 http://localhost:5173
-
-📮 API Testing with Postman
-
-
-Register User → POST /api/auth/register
-
-{
-  "username": "Adarsh",
-  "password": "password123"
-}
-
-
-Login User → POST /api/auth/login
-
-{
-  "username": "Adarsh",
-  "password": "password123"
-}
-
-
-✅ Returns JWT token for authorization.
-
-Add Sweet (Admin only)
-
-Use Bearer token in Authorization header.
-
-{
-  "name": "Ladoo",
-  "category": "Indian",
-  "price": 50.0,
-  "quantity": 20
-}
-
-👑 Admin Setup
-
-One default admin: 
-
-    Username: admin
-    password: admin123
-
-
-🧪 Testing
-
-Run all backend tests:
-
 mvn test
 
-🤖 My AI Usage
+🤖 AI Usage
+✅ Tools
 
-In this project, I used AI tools to support development, problem-solving, and documentation.
-
-✅ Tools Used
-
-ChatGPT (OpenAI GPT-5)
+ChatGPT (GPT-5)
 
 GitHub Copilot
 
-✅ How I Used Them
+✅ Helped In
 
-ChatGPT:
+Designing backend architecture
 
-Helped design the backend API structure.
+Fixing Spring Security + JWT issues
 
-Guided Spring Boot implementation (services, controllers, repositories).
+Docker + EC2 deployment
 
-Assisted in debugging (fixing role assignment, JWT errors, Tailwind setup).
+Debugging & writing queries
 
-Suggested Postman test cases & Git commands.
+Creating login/register UI
 
-Helped build frontend setup with React + Bootstrap.
-
-Take help in creating frontend login and registration page
-
-GitHub Copilot:
-
-Suggested boilerplate code for entities, repositories, service methods.
-
-Assisted with JSX snippets for UI components.
-
-✅ Reflection on AI in Workflow
-
-AI accelerated development by generating repetitive code.
-
-Acted like a tutor, explaining concepts and errors.
-
-I reviewed and customized all AI outputs — ensuring learning + correctness.
-
-Saved significant time, especially in debugging and testing.
+Writing documentation
 
 📌 Future Enhancements
 
-Add Order History for users.
+User order history
 
-Improve UI and want to make full pledged sweet management system.
+Complete UI redesign
 
-Implement Payment Gateway Integration.
+Payment gateway integration
 
-Deploy project to Docker + Cloud (AWS/Render).
+Email & OTP login
+
+Convert into Microservices
+
+✅ Footer
+
+Made with ❤️ by Adarsh Kumar Choubey
+Full-Stack Developer | Java | Spring Boot | React | AWS | Docker
